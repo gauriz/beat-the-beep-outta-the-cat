@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
+.grid-container {
+    padding: 10px;
+    display: grid;
+    max-width: 92%;
+    margin-top: 200px;
+}
+
+.grid-item {
+    border: 2px solid #034f84;
+    padding: 24px;
+    font-size: 30px;
+    text-align: center;
+    background-color: #406469a1;
+    border: 2px solid white;
+    min-height: 309px;
+    min-width: 575px;
+}
+
+$color-black: #161616;
+$color-white: #fff;
+$size: 170px; // (Fully responsive)
+// Cat
+.cat {
+    position: relative;
+    height: $size;
+    width: $size * 1.13;
+}
+
+// Ears
+.ear {
+    position: absolute;
+    top: -30%;
+    height: 60%;
+    width: 25%;
+    background: $color-white; // Ear hair
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 24%;
+        height: 10%;
+        width: 5%;
+        border-radius: 50%;
+        background: $color-black;
+    }
+    &::after {
+        transform-origin: 50% 100%;
+    }
+}
+
+.ear--left {
+    left: -7%;
+    border-radius: 70% 30% 0% 0% / 100% 100% 0% 0%;
+    transform: rotate(-15deg);
+    &::before,
+    &::after {
+        right: 10%;
+    }
+    &::after {
+        transform: rotate(-45deg);
+    }
+}
+
+.ear--right {
+    right: -7%;
+    border-radius: 30% 70% 0% 0% / 100% 100% 0% 0%;
+    transform: rotate(15deg);
+    &::before,
+    &::after {
+        left: 10%;
+    }
+    &::after {
+        transform: rotate(45deg);
+    }
+}
+
+// Face
+.face {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: $color-black;
+    border-radius: 50%;
+}
+
+// Eyes
+.eye {
+    position: absolute;
+    top: 35%;
+    height: 30%;
+    width: 31%;
+    background: $color-white;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; // Eyelids
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 0;
+        width: 100%;
+        border-radius: 0 0 50% 50% / 0 0 40% 40%;
+        background: $color-black;
+        animation: blink 4s infinite ease-in;
+    }
+    @keyframes blink {
+        0% {
+            height: 0;
+        }
+        90% {
+            height: 0;
+        }
+        92.5% {
+            height: 100%;
+        }
+        95% {
+            height: 0;
+        }
+        97.5% {
+            height: 100%;
+        }
+        100% {
+            height: 0;
+        }
+    } // Tips of the eyes
+    &::before {
+        content: '';
+        position: absolute;
+        top: 60%;
+        height: 10%;
+        width: 15%;
+        background: $color-white;
+        border-radius: 50%;
+    }
+}
+
+.eye--left {
+    left: 0;
+    &::before {
+        right: -5%;
+    }
+}
+
+.eye--right {
+    right: 0;
+    &::before {
+        left: -5%;
+    }
+}
+
+// Pupils
+.eye-pupil {
+    position: absolute;
+    top: 25%;
+    height: 50%;
+    width: 20%;
+    background: $color-black;
+    border-radius: 50%;
+    animation: look-around 4s infinite;
+    @keyframes look-around {
+        0% {
+            transform: translate(0)
+        }
+        5% {
+            transform: translate(50%, -25%)
+        }
+        10% {
+            transform: translate(50%, -25%)
+        }
+        15% {
+            transform: translate(-100%, -25%)
+        }
+        20% {
+            transform: translate(-100%, -25%)
+        }
+        25% {
+            transform: translate(0, 0)
+        }
+        100% {
+            transform: translate(0, 0)
+        }
+    }
+    .eye--left & {
+        right: 30%;
+    }
+    .eye--right & {
+        left: 30%;
+    } // Glare on the pupil
+    &::after {
+        content: '';
+        position: absolute;
+        top: 30%;
+        right: -5%;
+        height: 20%;
+        width: 35%;
+        border-radius: 50%;
+        background: $color-white;
+    }
+}
+
+// Muzzle
+.muzzle {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    height: 6%;
+    width: 10%;
+    background: $color-white;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
+}
+
+
+/* General page styling */
+
+html {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $color-black;
+}
+
+// Bat
+.fly {
+    cursor: url("data:image/svg+xml,%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='32px' height='32px' viewBox='0 0 512 512' style='enable-background:new 0 0 512 512;' xml:space='preserve'%3E %3Cpath d='M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4 L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1 c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1 c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z'/%3E %3C/svg%3E"), auto;
+}
+
+.cursors {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    height: 100vh;
+}
+
+.cursors>div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    box-sizing: border-box;
+    padding: 10px 2px;
+    text-align: center;
+    &:nth-child(odd) {
+        background: #eee;
+    }
+    &:hover {
+        opacity: 0.25
+    }
+}
+
+.centered {
+    padding-bottom: 100px;
+    font-size: 88px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Yellowtail", cursive;
+    color: #d39e00;
+}
