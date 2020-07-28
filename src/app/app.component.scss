@@ -2,8 +2,6 @@
 .grid-container {
     padding: 10px;
     display: grid;
-    max-width: 92%;
-    margin-top: 200px;
 }
 
 .grid-item {
@@ -14,7 +12,6 @@
     background-color: #406469a1;
     border: 2px solid white;
     min-height: 309px;
-    min-width: 575px;
 }
 
 $color-black: #161616;
