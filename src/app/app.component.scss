@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
 .grid-container {
-    padding: 10px;
     display: grid;
+    // height: 99vh;
 }
 
 .grid-item {
@@ -11,12 +11,23 @@
     text-align: center;
     background-color: #406469a1;
     border: 2px solid white;
-    min-height: 309px;
+    min-height: calc(99vh/3);
+}
+
+#gridItem>div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 30%;
+}
+
+.container-fluid {
+    // width: 99% !important;
 }
 
 $color-black: #161616;
 $color-white: #fff;
-$size: 170px; // (Fully responsive)
+$size: 60px; // (Fully responsive)
 // Cat
 .cat {
     position: relative;
@@ -254,4 +265,36 @@ html {
     transform: translate(-50%, -50%);
     font-family: "Yellowtail", cursive;
     color: #d39e00;
+}
+
+@media(min-width: 768px) {
+    .cat {
+        height: 167px;
+        width: 219.8px;
+    }
+    #gridItem>div {
+        top: 8%;
+    }
+}
+
+@media(min-width: 576px) and (max-width: 768px) {
+    .cat {
+        height: 135px;
+        width: 145px;
+    }
+    #gridItem>div {
+        position: absolute !important;
+        left: 0;
+        right: 0;
+        top: 20%;
+    }
+}
+
+@media(max-width: 576px) {
+    #gridItem>div {
+        position: absolute !important;
+        left: 0;
+        right: 0;
+        top: 29%;
+    }
 }

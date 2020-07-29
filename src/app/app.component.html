@@ -1,6 +1,6 @@
-<div class="container grid-container">
+<div class="container-fluid grid-container">
     <div class="row">
-        <div [class]="'col-' + (12/totalDeck) + ' grid-item fly col-xl-' + (12/totalDeck)" *ngFor='let item of items' (click)='checkClick(hidden)'>
+        <div id='gridItem' [class]="'col-' + (12/totalDeck) + ' grid-item fly col-xl-' + (12/totalDeck)" *ngFor='let item of items' (click)='checkClick(hidden)'>
             <div class="particles-button" style="margin-top: 40%;" *ngIf='item == gridNumber' libParticleEffectButton (pComplete)="randomNumberGenerator()" pType="triangle" pEeasing="easeOutSine" [pSize]="7" pDuration="50" pParticlesAmountCoefficient="7" [pSpeed]="5"
                 pOscillationCoefficient="10" [pHidden]="hidden">
                 <div class="cat" (click)="hidden=!hidden;catClicked(item)">
@@ -20,6 +20,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <!-- The Modal -->
