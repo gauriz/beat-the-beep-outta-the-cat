@@ -17,15 +17,46 @@
                     </div>
                 </div>
             </div>
+
+            <div class="dog" *ngIf='item == dogNumber'>
+                <div class="dog-body">
+                    <div class="dog-tail">
+                        <div class="dog-tail">
+                            <div class="dog-tail">
+                                <div class="dog-tail">
+                                    <div class="dog-tail">
+                                        <div class="dog-tail">
+                                            <div class="dog-tail">
+                                                <div class="dog-tail"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dog-torso"></div>
+                <div class="dog-head">
+                    <div class="dog-ears">
+                        <div class="dog-ear"></div>
+                        <div class="dog-ear"></div>
+                    </div>
+                    <div class="dog-eyes">
+                        <div class="dog-eye"></div>
+                        <div class="dog-eye"></div>
+                    </div>
+                    <div class="dog-muzzle">
+                        <div class="dog-tongue"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-
-
-
 <!-- The Modal -->
-<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'" style="position: absolute;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <!-- Modal Header -->

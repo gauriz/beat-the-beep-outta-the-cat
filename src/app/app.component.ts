@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   name = '';
   lastHighScore = 0;
   userId: any;
+  dogNumber: number;
   constructor(private appTitle: Title, private firestore: AngularFirestore) {
     this.appTitle.setTitle('Beat The Beep Outta The Cat!');
   }
@@ -33,14 +34,26 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.items = Array.from(Array(this.totalDeck * this.totalDeck), (_, i) => i + 1);
     this.randomNumberGenerator();
+    this.randomDogGenerator();
   }
 
   randomNumberGenerator(): void {
     this.hidden = false;
     this.gridNumber = Math.floor(Math.random() * (this.totalDeck * this.totalDeck)) + 1;
+    this.randomDogGenerator();
+  }
+
+  randomDogGenerator(): void {
+    let dogNumber = Math.floor(Math.random() * (this.totalDeck * this.totalDeck)) + 1;
+    if (dogNumber === this.gridNumber) {
+      this.randomDogGenerator();
+    } else {
+      this.dogNumber = dogNumber;
+    }
   }
 
   checkClick(hidden): void {
+    console.log(hidden);
     if (!hidden) {
       this.show();
     }
