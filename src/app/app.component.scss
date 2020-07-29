@@ -294,3 +294,14 @@ html {
         top: 29%;
     }
 }
+
+.flex-container {
+    display: flex;
+    align-items: stretch;
+    background-color: #f1f1f1;
+}
+
+.flex-container>div {
+    margin: 10px;
+    text-align: center;
+}

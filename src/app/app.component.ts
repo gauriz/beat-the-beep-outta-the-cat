@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
+import { AngularFirestore } from '@angular/fire/firestore';
 
+export interface DataUser {
+  username: string,
+  highscore: number,
+  userId: string
+}
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit {
   title = 'beat-the-beep-outta-the-cat';
   items;
@@ -13,10 +20,13 @@ export class AppComponent implements OnInit {
   gridNumber: number;
   hidden = true;
   winCount = 0;
-  showModal = false;
+  showModal = true;
   content = '';
-
-  constructor(private appTitle: Title) {
+  buttonText = 'Start';
+  name = '';
+  lastHighScore = 0;
+  userId: any;
+  constructor(private appTitle: Title, private firestore: AngularFirestore) {
     this.appTitle.setTitle('Beat The Beep Outta The Cat!');
   }
 
@@ -42,16 +52,61 @@ export class AppComponent implements OnInit {
     }
   }
 
-  show(): void {
+  async show(): Promise<any> {
+    this.buttonText = 'OK';
     this.showModal = true;
     this.content = 'You killed ' + (this.winCount === 0 ? 'NO cats! Big Whoop!' : (this.winCount === 1 ? ' 1 cat! *_* Meh!'
       : this.winCount + ' cats! Hurray! '));
-    this.title = 'You Loooooooooooooooooooose!!';
+    this.title = 'Uh oh!! You lost!';
+    if (this.name != '') {
+      if (this.lastHighScore) {
+        await this.getProgress(this.name);
+        this.checkAndSaveNewHighScore(this.winCount, this.lastHighScore);
+      } else {
+        this.addNewHighscore({ username: this.name, highscore: this.winCount });
+        this.lastHighScore = this.winCount;
+      }
+    }
   }
 
   hide(): void {
     this.showModal = false;
+    if (this.buttonText === 'Start') {
+      this.name = document.getElementById("name")['value'];
+      this.getProgress(this.name);
+    }
     this.winCount = 0;
   }
 
+  getProgress(name) {
+    this.firestore.collection('users').valueChanges({ idField: 'userId' }).subscribe(data => {
+      const dataElem = data.filter((dataElem: DataUser) => {
+        return dataElem.username == name
+      });
+      if (dataElem && dataElem[0]) {
+        this.userId = dataElem[0]['userId'];
+        this.lastHighScore = dataElem[0]['highscore'];
+      } else {
+        this.name = name;
+      }
+    });
+  }
+
+  async checkAndSaveNewHighScore(newScore, lastScore) {
+    if (newScore > lastScore) {
+      // save new score as high score
+      const saved = await this.savenewHighScore({ username: this.name, highscore: newScore });
+    }
+  }
+
+  savenewHighScore(data): void {
+    var userRef = this.firestore.collection('users').doc(this.userId);
+    var removeCapital = userRef.update({
+      highscore: data.highscore
+    });
+  }
+
+  async addNewHighscore(data) {
+    await this.firestore.collection('users').add(data);
+  }
 }

@@ -28,21 +28,23 @@
 <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">{{ title }}</h4>
-                <button type="button" class="close" data-dismiss="modal" (click)="hide()">&times;</button>
+                <!-- <button type="button" class="close" data-dismiss="modal" (click)="hide()">&times;</button> -->
             </div>
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                {{ content }}
+            <div class="flex-container" *ngIf='buttonText === "Start"'>
+                <div style="flex-grow: 1"><label> Enter name </label> </div>
+                <div style="flex-grow: 1"> <input type="text" required id='name'></div>
             </div>
+            <div class="flex-container" *ngIf='buttonText !== "Start"'>
 
+                <div style="flex-grow: 1"><label>   {{ content }} </label> <br> <label *ngIf='name != ""'>   {{lastHighScore ? ' HighScore :' + lastHighScore : ''}} </label> </div>
+            </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="hide()">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="hide()">{{buttonText}}</button>
             </div>
 
         </div>
