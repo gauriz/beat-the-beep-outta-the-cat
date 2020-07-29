@@ -40,7 +40,11 @@ export class AppComponent implements OnInit {
   randomNumberGenerator(): void {
     this.hidden = false;
     this.gridNumber = Math.floor(Math.random() * (this.totalDeck * this.totalDeck)) + 1;
-    this.randomDogGenerator();
+    if (this.winCount % 3 === 0) {
+      this.randomDogGenerator();
+    } else {
+      this.dogNumber = -1;
+    }
   }
 
   randomDogGenerator(): void {
@@ -53,7 +57,6 @@ export class AppComponent implements OnInit {
   }
 
   checkClick(hidden): void {
-    console.log(hidden);
     if (!hidden) {
       this.show();
     }
