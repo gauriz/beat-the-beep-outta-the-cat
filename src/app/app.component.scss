@@ -729,3 +729,9 @@ $easing: ease-in-out;
     box-sizing: border-box;
     position: relative;
 }
+
+.list-group {
+    max-height: 200px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}

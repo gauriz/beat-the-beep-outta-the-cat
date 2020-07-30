@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { map } from 'rxjs/operators';
 
 export interface DataUser {
   username: string,
@@ -27,7 +29,9 @@ export class AppComponent implements OnInit {
   lastHighScore = 0;
   userId: any;
   dogNumber: number;
-  constructor(private appTitle: Title, private firestore: AngularFirestore) {
+  showTopScores = false;
+  topScores: { username: string; highscore: number; userId: string; id: string; }[] = [];
+  constructor(private appTitle: Title, private firestore: AngularFirestore, private db: AngularFireDatabase) {
     this.appTitle.setTitle('Beat The Beep Outta The Cat!');
   }
 
@@ -71,22 +75,21 @@ export class AppComponent implements OnInit {
   async show(): Promise<any> {
     this.buttonText = 'OK';
     this.showModal = true;
-    this.content = 'You killed ' + (this.winCount === 0 ? 'NO cats! Big Whoop!' : (this.winCount === 1 ? ' 1 cat! *_* Meh!'
+    this.content = this.name + ', You killed ' + (this.winCount === 0 ? 'NO cats! Big Whoop!' : (this.winCount === 1 ? ' 1 cat! *_* Meh!'
       : this.winCount + ' cats! Hurray! '));
     this.title = 'Uh oh!! You lost!';
-    if (this.name != '') {
-      if (this.lastHighScore) {
-        await this.getProgress(this.name);
-        this.checkAndSaveNewHighScore(this.winCount, this.lastHighScore);
-      } else {
-        this.addNewHighscore({ username: this.name, highscore: this.winCount });
-        this.lastHighScore = this.winCount;
-      }
+    if (typeof this.lastHighScore === 'number') {
+      await this.getProgress(this.name);
+      this.checkAndSaveNewHighScore(this.winCount, this.lastHighScore);
+    } else {
+      this.addNewHighscore({ username: this.name, highscore: this.winCount });
+      this.lastHighScore = this.winCount;
     }
   }
 
   hide(): void {
     this.showModal = false;
+    this.showTopScores = false;
     if (this.buttonText === 'Start') {
       this.name = document.getElementById("name")['value'];
       this.getProgress(this.name);
@@ -111,7 +114,11 @@ export class AppComponent implements OnInit {
   async checkAndSaveNewHighScore(newScore, lastScore) {
     if (newScore > lastScore) {
       // save new score as high score
-      const saved = await this.savenewHighScore({ username: this.name, highscore: newScore });
+      try {
+        const saved = await this.savenewHighScore({ username: this.name, highscore: newScore });
+      } catch (err) {
+        this.addNewHighscore({ username: this.name, highscore: this.winCount });
+      }
     }
   }
 
@@ -124,5 +131,18 @@ export class AppComponent implements OnInit {
 
   async addNewHighscore(data) {
     await this.firestore.collection('users').add(data);
+  }
+
+  getTopScores() {
+    const fireCollection = this.firestore.collection<any>('/users', ref => ref.orderBy('highscore', 'desc'));
+    fireCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as DataUser;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))).subscribe(data => {
+        this.topScores = data;
+        this.showTopScores = true;
+      });
   }
 }
