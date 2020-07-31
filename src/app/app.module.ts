@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ParticleEffectButtonModule } from 'angular-particle-effect-button';
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
 import { AngularFireModule } from '@angular/fire';
@@ -17,7 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     CommonModule,
-    ParticleEffectButtonModule,
     AngularFireModule.initializeApp(environment.firebaseConfig, 'beat-the-beep-outta-the-cat'),
     AngularFireAnalyticsModule,
     AngularFirestoreModule,
