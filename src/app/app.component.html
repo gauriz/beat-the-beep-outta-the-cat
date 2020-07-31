@@ -1,24 +1,21 @@
 <div class="container-fluid grid-container">
     <div class="row">
-        <div id='gridItem' [class]="'col-' + (12/totalDeck) + ' grid-item fly col-xl-' + (12/totalDeck)" *ngFor='let item of items' (click)='checkClick(hidden)'>
-            <div class="particles-button" style="margin-top: 40%;" *ngIf='item == gridNumber' libParticleEffectButton (pComplete)="randomNumberGenerator()" pType="triangle" pEeasing="easeOutSine" [pSize]="7" pDuration="50" pParticlesAmountCoefficient="7" [pSpeed]="5"
-                pOscillationCoefficient="10" [pHidden]="hidden">
-                <div class="cat" (click)="hidden=!hidden;catClicked(item)">
-                    <div class="ear ear--left"></div>
-                    <div class="ear ear--right"></div>
-                    <div class="face">
-                        <div class="eye eye--left">
-                            <div class="eye-pupil"></div>
-                        </div>
-                        <div class="eye eye--right">
-                            <div class="eye-pupil"></div>
-                        </div>
-                        <div class="muzzle"></div>
+        <div id='gridItem' [class]="'col-' + (12/totalDeck) + ' grid-item fly col-xl-' + (12/totalDeck)" *ngFor='let item of items' (click)='checkClick(item)'>
+            <div class="cat" (click)="catClicked(item)" *ngIf='item == gridNumber' [@catAnimation]>
+                <div class="ear ear--left"></div>
+                <div class="ear ear--right"></div>
+                <div class="face">
+                    <div class="eye eye--left">
+                        <div class="eye-pupil"></div>
                     </div>
+                    <div class="eye eye--right">
+                        <div class="eye-pupil"></div>
+                    </div>
+                    <div class="muzzle"></div>
                 </div>
             </div>
 
-            <div class="dog" *ngIf='item == dogNumber'>
+            <div class="dog" *ngIf='item == dogNumber' [@dogAnimation]>
                 <div class="dog-body">
                     <div class="dog-tail">
                         <div class="dog-tail">
@@ -53,6 +50,7 @@
             </div>
         </div>
     </div>
+    <button class='btn btn-info buttonOverlay'> {{winCount}} </button>
 </div>
 
 <!-- The Modal -->
@@ -85,3 +83,5 @@
             </ul>
         </div>
     </div>
+
+</div>

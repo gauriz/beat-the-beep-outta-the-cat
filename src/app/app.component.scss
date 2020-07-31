@@ -14,18 +14,13 @@
     min-height: calc(99vh/3);
 }
 
-#gridItem>.dog {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 30%;
-}
-
 #gridItem>div {
     position: absolute;
     left: 0;
     right: 0;
-    top: 30%;
+    top: 18%;
+    bottom: 0;
+    margin: auto;
 }
 
 $color-black: #161616;
@@ -275,13 +270,6 @@ html {
         height: 167px;
         width: 219.8px;
     }
-    #gridItem>.dog {
-        top: 47%;
-        left: 39%;
-    }
-    #gridItem>div {
-        top: 8%;
-    }
 }
 
 @media(min-width: 576px) and (max-width: 768px) {
@@ -289,32 +277,34 @@ html {
         height: 135px;
         width: 145px;
     }
-    #gridItem>.dog {
-        top: 52%;
-        left: 23%;
-    }
-    #gridItem>div {
-        position: absolute !important;
-        left: 0;
-        right: 0;
-        top: 20%;
-    }
 }
 
-@media(max-width: 576px) {
-    #gridItem>div {
-        position: absolute !important;
-        left: 0;
-        right: 0;
-        top: 29%;
-    }
-    #gridItem>.dog {
-        top: 52%;
-        left: 25%;
-    }
+@media(max-width: 470px) {
     .dog {
         width: 80px !important;
         height: 90px !important;
+    }
+}
+
+@media(min-width: 470px) and (max-width: 506px) {
+    .dog {
+        width: 80px !important;
+        height: 90px !important;
+    }
+    .cat {
+        height: 102px;
+        width: 116px;
+    }
+}
+
+@media(min-width: 506px) and (max-width: 576px) {
+    .dog {
+        width: 80px !important;
+        height: 90px !important;
+    }
+    .cat {
+        height: 102px;
+        width: 116px;
     }
 }
 
@@ -734,4 +724,14 @@ $easing: ease-in-out;
     max-height: 200px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+}
+
+.buttonOverlay {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    top: 20px;
+    left: 20px;
+    border-radius: 50px;
+    text-align: center;
 }

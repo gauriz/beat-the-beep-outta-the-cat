@@ -3,7 +3,7 @@ import { Title } from "@angular/platform-browser";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
-
+import { trigger, style, animate, transition } from '@angular/animations';
 export interface DataUser {
   username: string,
   highscore: number,
@@ -12,7 +12,33 @@ export interface DataUser {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger(
+      'catAnimation', [
+      transition(':enter', [
+        style({ transform: 'translateY(100%)', opacity: 0 }),
+        animate('200ms', style({ transform: 'translateY(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ transform: 'translateX(0)', opacity: 1 }),
+        animate('100ms', style({ transform: 'translateX(100%)', opacity: 0 }))
+      ])
+    ]
+    ),
+    trigger(
+      'dogAnimation', [
+      transition(':enter', [
+        style({ transform: 'translateY(-100%)', opacity: 0 }),
+        animate('200ms', style({ transform: 'translateY(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ transform: 'translateY(0)', opacity: 1 }),
+        animate('200ms', style({ transform: 'translateY(100%)', opacity: 0 }))
+      ])
+    ]
+    )
+  ]
 })
 
 export class AppComponent implements OnInit {
@@ -20,7 +46,6 @@ export class AppComponent implements OnInit {
   items;
   totalDeck = 3;
   gridNumber: number;
-  hidden = true;
   winCount = 0;
   showModal = true;
   content = '';
@@ -30,6 +55,7 @@ export class AppComponent implements OnInit {
   userId: any;
   dogNumber: number;
   showTopScores = false;
+  showCat = true;
   topScores: { username: string; highscore: number; userId: string; id: string; }[] = [];
   constructor(private appTitle: Title, private firestore: AngularFirestore, private db: AngularFireDatabase) {
     this.appTitle.setTitle('Beat The Beep Outta The Cat!');
@@ -42,12 +68,16 @@ export class AppComponent implements OnInit {
   }
 
   randomNumberGenerator(): void {
-    this.hidden = false;
-    this.gridNumber = Math.floor(Math.random() * (this.totalDeck * this.totalDeck)) + 1;
-    if (this.winCount % 3 === 0) {
-      this.randomDogGenerator();
+    let catNumber = Math.floor(Math.random() * (this.totalDeck * this.totalDeck)) + 1;
+    if (catNumber === this.gridNumber) {
+      this.randomNumberGenerator();
     } else {
-      this.dogNumber = -1;
+      this.gridNumber = catNumber;
+      if (this.winCount % 3 === 0) {
+        this.randomDogGenerator();
+      } else {
+        this.dogNumber = -1;
+      }
     }
   }
 
@@ -60,23 +90,28 @@ export class AppComponent implements OnInit {
     }
   }
 
-  checkClick(hidden): void {
-    if (!hidden) {
+  checkClick(item): void {
+    console.log(item, this.gridNumber)
+    if (item != this.gridNumber) {
       this.show();
+    } else {
+      this.randomNumberGenerator();
     }
   }
 
   catClicked(item): void {
     if (item === this.gridNumber) {
+      this.showCat = false;
       this.winCount++;
+      this.showCat = true;
     }
   }
 
   async show(): Promise<any> {
     this.buttonText = 'OK';
     this.showModal = true;
-    this.content = this.name + ', You killed ' + (this.winCount === 0 ? 'NO cats! Big Whoop!' : (this.winCount === 1 ? ' 1 cat! *_* Meh!'
-      : this.winCount + ' cats! Hurray! '));
+    this.content = this.name + ' -- You killed ' + (this.winCount === 0 ? 'NO cats! Big Whoop! -- ' : (this.winCount === 1 ? ' 1 cat! *_* Meh! -- '
+      : this.winCount + ' cats! Hurray! -- '));
     this.title = 'Uh oh!! You lost!';
     if (typeof this.lastHighScore === 'number') {
       await this.getProgress(this.name);
@@ -95,6 +130,7 @@ export class AppComponent implements OnInit {
       this.getProgress(this.name);
     }
     this.winCount = 0;
+    this.randomNumberGenerator();
   }
 
   getProgress(name) {
